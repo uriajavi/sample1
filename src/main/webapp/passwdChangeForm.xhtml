@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:uar="http://xmlns.jcp.org/jsf/composite/uarcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{loginBean.validateSession}"/>
+            </f:metadata>
+
+            <ui:define name="content_title">
+                Cambio de contraseña 
+            </ui:define>
+            <ui:define name="content">
+                <span class="Line"/>
+                <h:form id="passwdform" lang="es" style="display:table;width: 100%;">
+
+                    <h:panelGroup layout="block" style="display:table;padding-top: 20px;">
+                        <h:graphicImage library="images" name="lock.jpg" 
+                                        style="vertical-align: middle;padding-top: 20px;display:table-cell;"/>
+                        <h:panelGroup layout="block" style="display: table-cell;padding-top: 20px;
+                                                            padding-left: 100px;vertical-align: middle;">
+
+                            <h:outputLabel id="newpasswdLabel" value="Nueva contraseña" 
+                                           for="newpasswd" style="display:table-row"/>
+                            <h:inputSecret id="newpasswd" 
+                                         maxlength="255" 
+                                         required="true" p:required="true"
+                                         style="display:table-row;"
+                                         value="#{loginBean.newPasswd}"
+                                         />
+
+                            <h:outputLabel id="confirmpasswdLabel" value="Repetir contraseña" 
+                                           for="confirmpasswd" style="display:table-row"/>
+                            <h:inputSecret id="confirmpasswd" 
+                                         maxlength="255" 
+                                         required="true" p:required="true"
+                                         style="display:table-row;"
+                                         value="#{loginBean.confirmPasswd}"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                        <h:commandButton id="send"
+                                         style="margin-left: 30px;"
+                                         styleClass="button" value="Cambiar"
+                                         title="pulse aquí para cambiar la contraseña" 
+                                         p:form="passwdform"
+                                         action="#{loginBean.changePasswd}"/>
+                        <h:commandButton id="cancel"
+                                         style="float:right;"
+                                         styleClass="button" value="Cancelar"
+                                         title="pulse aquí para volver a la página anterior"
+                                         action="#{loginBean.cancelPasswdChange}"
+                                         immediate="true"
+                                         onclick="document.getElementById('passwdform').setAttribute('novalidate','')"
+                                     />
+                        <h:messages layout="table" styleClass="error-messages"
+                                    style="margin-left: auto; margin-right: auto;"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

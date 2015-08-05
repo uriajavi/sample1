@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:uar="http://xmlns.jcp.org/jsf/composite/uarcomp"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <ui:define name="content_title">
+                Acceso de usuarios 
+            </ui:define>
+            <ui:define name="content">
+                <h:panelGroup styleClass="Line"/>
+                <h:form id="loginform" lang="es" style="display:table;width: 100%;">
+
+                    <h:panelGroup layout="block" style="display:table;padding-top: 20px;">
+                        <h:graphicImage library="images" name="lock.jpg" 
+                                        style="vertical-align: middle;padding-top: 20px;display:table-cell;"/>
+                        <h:panelGroup layout="block" style="display: table-cell;padding-top: 20px;
+                                                            padding-left: 100px;vertical-align: middle;">
+
+                            <h:outputLabel id="loginLabel" value="DNI" 
+                                           for="DNI" style="display:table-row"/>
+                            <h:inputText id="DNI" 
+                                         maxlength="100" 
+                                         required="true" p:required="true"
+                                         style="display:table-row;"
+                                         validator="#{signUp.validateDNI}"
+                                         value="#{loginBean.login}"
+                                         tabindex="1"
+                                         />
+
+                            <h:outputLabel id="passwordLabel" value="Contraseña" 
+                                           for="password" style="display:table-row"/>
+                            <h:inputSecret id="password" 
+                                         maxlength="255" 
+                                         required="true" p:required="true"
+                                         style="display:table-row;"
+                                         value="#{loginBean.password}"
+                                         tabindex="2"/>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                        <h:commandButton id="send"
+                                         style="margin-left: 30px;"
+                                         styleClass="button" value="Enviar"
+                                         title="pulse aquí para enviar sus credenciales" 
+                                         p:form="loginform"
+                                         action="#{loginBean.validateLogin}"
+                                         tabindex="3"/>
+                        <h:commandButton id="cancel"
+                                         style="float:right;"
+                                         styleClass="button" value="Cancelar"
+                                         title="pulse aquí para volver a la página anterior"
+                                         action="#{loginBean.cancel}"
+                                         immediate="true"
+                                         onclick="document.getElementById('loginform').setAttribute('novalidate','')"
+                                         tabindex="4"
+                                     />
+                        <h:commandButton  id="resetpasswd"
+                                    action="#{loginBean.resetPassword}"
+                                    title="pulse aquí si ha olvidado su contraseña y quiere recibir una nueva por email"
+                                    style="display: table-row;float: right; margin:3px 0px 0px 10px;
+                                            padding: 3px; font-size: 150%; font-weight: normal;"
+                                    styleClass="button"
+                                    value="reset contraseña"
+                                    onclick="return resetPasswdOnClick();"
+                                    tabindex="5"
+                                    />
+
+                        <h:messages layout="table" styleClass="error-messages"
+                                    style="margin-left: auto; margin-right: auto;"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

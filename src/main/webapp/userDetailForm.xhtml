@@ -1,0 +1,139 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:uar="http://xmlns.jcp.org/jsf/composite/uarcomp">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{loginBean.validateSession}"/>
+            </f:metadata>
+
+            <ui:define name="content_title">
+                Detalle de usuario 
+            </ui:define>
+            <ui:define name="content">
+                <span class="Line"/>
+
+                <h:form id="userdataform" lang="es" style="display:table;width:100%">
+                    <h:panelGroup layout="block" style="display: table-row;padding-top: 20px;width:100%">
+                        <h:messages layout="table" styleClass="error-messages"/>
+                                
+                        <h:outputLabel id="nameLabel" value="Nombre" 
+                                       for="name" style="display:table-row"/>
+                        <h:inputText id="name" 
+                                     maxlength="100" 
+                                     required="true" p:required="true"
+                                     style="display:table-row;"
+                                     value="#{userDetailBean.user.name}"
+                                     />
+                        
+                        <h:outputLabel id="surnameLabel" value="Apellidos" 
+                                       for="surname" style="display:table-row"/>
+                        <h:inputText id="surname" 
+                                     maxlength="255" 
+                                     required="true" p:required="true"
+                                     style="display:table-row;width:100%;"
+                                     value="#{userDetailBean.user.surname}"
+                                     />
+
+                        <h:outputLabel id="dniLabel" value="DNI" 
+                                       for="name" style="display:table-row"/>
+                        <h:inputText id="dni" 
+                                     maxlength="100" 
+                                     required="true" p:required="true"
+                                     style="display:table-row;"
+                                     value="#{userDetailBean.user.credential.login}"
+                                     validator="#{signUp.validateDNI}"/>
+                        
+                        <h:outputLabel id="emailLabel" value="Correo electrónico" 
+                                       for="email" style="display:table-row"/>
+                        <h:inputText id="email" 
+                                     maxlength="100" 
+                                     p:type="email"
+                                     required="true" p:required="true"
+                                     style="display:table-row;width:100%;"
+                                     value="#{userDetailBean.user.email}"/>
+                        
+                        <h:outputLabel id="positionLabel" value="Puesto profesional" 
+                                       for="position" style="display:table-row"/>
+                        <h:inputTextarea id="position" 
+                                         p:maxlength="255" 
+                                         rows="2" cols="30"
+                                         required="true" p:required="true"
+                                         style="display:table-row;width:100%;"
+                                         title="Introduzca un historial de puestos o el último e indique si no está trabajando actualmente"
+                                         value="#{userDetailBean.user.position}" />
+                        
+                        <h:outputLabel id="titleLabel" value="Titulación académica" 
+                                       for="title" style="display:table-row"/>
+                        <h:inputTextarea id="title" p:maxlength="255" rows="2" cols="30"
+                                        required="true" p:required="true"
+                                        style="display:table-row;width:100%;"
+                                        title="Puede poner sólo la titulación más importante"
+                                        value="#{userDetailBean.user.title}"/>
+
+                        <h:panelGroup layout="block" style="display: table-row;">
+                            <h:panelGroup layout="block" style="display: table-cell;">
+                                <h:outputLabel id="statusLabel" value="Estado del usuario" 
+                                               for="status"  style="display: table-row"/>
+                                <h:selectOneMenu id="status"
+                                                 value="#{userDetailBean.user.status}"
+                                                 style="display: table-row"
+                                                 converter="statusConverter" >
+                                    <f:selectItems value="#{userDetailBean.allStatuses}"
+                                                   var="stat"
+                                                   itemValue="#{stat}"
+                                                   itemLabel="#{stat.description}"
+                                                   />
+                                </h:selectOneMenu>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" style="display: table-cell;padding-left: 100px;">
+                                <h:outputLabel id="privilegeLabel" value="Privilegios del usuario" 
+                                               for="privilege" style="display: table-row"/>
+
+                                <h:selectOneMenu id="privilege" 
+                                                 value="#{userDetailBean.user.privilege}"
+                                                  style="display: table-row"
+                                                  converter="privilegeConverter">
+                                    <f:selectItems value="#{userDetailBean.allPrivileges}"
+                                                   var="priv"
+                                                   itemValue="#{priv}"
+                                                   itemLabel="#{priv.description}"
+                                                   />
+                                </h:selectOneMenu>
+
+                            </h:panelGroup>
+                        </h:panelGroup>
+                        
+                        <h:outputLabel id="socialProfilesLabel" value="Perfiles redes sociales"
+                                       for="socialProfiles" style="display: table-row"/>
+                        <h:selectManyListbox id="socialProfiles" disabled="true" 
+                                             style="width: 70%;">
+                            <f:selectItems value="#{userDetailBean.user.socialProfiles}" 
+                                           var="sp"
+                                           itemLabel="#{sp.network} #{sp.account}"/>
+                        </h:selectManyListbox>    
+                        
+                    </h:panelGroup>
+
+                    <h:commandButton id="send"
+                                     styleClass="button" value="Modificar"
+                                     title="pulse aquí para enviar sus datos" 
+                                     p:form="userdataform"
+                                     action="#{userDetailBean.updateUserData}"
+                                     />
+                    <h:button id="cancel"
+                                     styleClass="button" value="Volver"
+                                     style="float:right;"
+                                     outcome="adminAreaPage" 
+                                     />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

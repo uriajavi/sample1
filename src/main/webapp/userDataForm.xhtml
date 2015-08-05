@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:uar="http://xmlns.jcp.org/jsf/composite/uarcomp">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{loginBean.validateSession}"/>
+            </f:metadata>
+
+            <ui:define name="content_title">
+                Datos de usuario 
+            </ui:define>
+            <ui:define name="content">
+                <span class="Line"/>
+
+                <h:form id="userdataform" lang="es" style="display:table;width:100%">
+                    <h:panelGroup layout="block" style="display: table;padding-top: 20px;width:100%">
+                        <h:messages layout="table" styleClass="error-messages"/>
+                                
+                        <h:outputLabel id="nameLabel" value="Nombre" 
+                                       for="name" style="display:table-row"/>
+                        <h:inputText id="name" 
+                                     maxlength="100" 
+                                     required="true" p:required="true"
+                                     style="display:table-row;"
+                                     value="#{loginBean.user.name}"
+                                     disabled="true"/>
+                        
+                        <h:outputLabel id="surnameLabel" value="Apellidos" 
+                                       for="surname" style="display:table-row"/>
+                        <h:inputText id="surname" 
+                                     maxlength="255" 
+                                     required="true" p:required="true"
+                                     style="display:table-row;width:100%;"
+                                     value="#{loginBean.user.surname}"
+                                     disabled="true"/>
+
+                        <h:outputLabel id="dniLabel" value="DNI" 
+                                       for="name" style="display:table-row"/>
+                        <h:inputText id="dni" 
+                                     maxlength="100" 
+                                     required="true" p:required="true"
+                                     style="display:table-row;"
+                                     value="#{loginBean.user.dni}"
+                                     disabled="true"/>
+                        
+                        <h:outputLabel id="emailLabel" value="Correo electrónico" 
+                                       for="email" style="display:table-row"/>
+                        <h:inputText id="email" 
+                                     maxlength="100" 
+                                     p:type="email"
+                                     required="true" p:required="true"
+                                     style="display:table-row;width:100%;"
+                                     value="#{loginBean.user.email}"/>
+                        
+                        <h:outputLabel id="positionLabel" value="Puesto profesional" 
+                                       for="position" style="display:table-row"/>
+                        <h:inputTextarea id="position" 
+                                         p:maxlength="255" 
+                                         rows="2" cols="30"
+                                         required="true" p:required="true"
+                                         style="display:table-row;width:100%;"
+                                         title="Introduzca un historial de puestos o el último e indique si no está trabajando actualmente"
+                                         value="#{loginBean.user.position}" />
+                        
+                        <h:outputLabel id="titleLabel" value="Titulación académica" 
+                                       for="title" style="display:table-row"/>
+                        <h:inputTextarea id="title" p:maxlength="255" rows="2" cols="30"
+                                        required="true" p:required="true"
+                                        style="display:table-row;width:100%;"
+                                        title="Puede poner sólo la titulación más importante"
+                                        value="#{loginBean.user.title}"/>
+                        
+                        <uar:socialNetworkList  id="socialProfiles"
+                                                title="Perfiles de redes sociales (opcional)"
+                                                data="#{loginBean.user}"/>
+                    </h:panelGroup>
+                    <h:commandButton id="send"
+                                     styleClass="button" value="Modificar"
+                                     title="pulse aquí para enviar sus datos" 
+                                     p:form="userdataform"
+                                     action="#{loginBean.updateUserData}"
+                                     />
+                    <h:button id="cancel"
+                                     styleClass="button" value="Volver"
+                                     style="float:right;"
+                                     outcome="memberAreaPage" 
+                                     />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

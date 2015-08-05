@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <ui:define name="content_title">
+                Acceso y registro de miembros de ECUSA
+            </ui:define>
+            <ui:define name="content">
+                <span class="Line"/>
+                <h:panelGroup layout="block" style="display:table">
+                    <h:graphicImage library="images"
+                                    name="people.jpg" 
+                                    style="display: table-cell; vertical-align: middle;
+                                               width:100%" />
+                    <p class="text" style="display: table-cell; vertical-align: middle">
+                        Mediante esta página puede acceder a la información disponible 
+                        para los miembros de ECUSA, o en el caso de no ser miembro,
+                        puede solicitar el registro dentro de ECUSA.
+                    </p>
+                </h:panelGroup>
+                
+                <h:form>
+                    <h:commandButton class="button" value="Acceder"
+                                     title="pulse aquí si ya es miembro de la asociación" 
+                                     action="loginForm"/>
+                    <h:commandButton class="button" value="Registrarse" style="float: right"
+                                     title="pulse aquí si aún no es miembro y desea registrarse"
+                                     action="registrationForm"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+         
+    </h:body>
+</html>
+

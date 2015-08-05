@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+          
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{loginBean.validateSession}"/>
+            </f:metadata>
+            <ui:define name="content_title">
+                <h:outputText value="Bienvenid@ #{loginBean.user.name} #{loginBean.user.surname}"
+                                       style="margin-left: auto; margin-right: auto;"
+                                       styleClass="welcometxt"/>
+            </ui:define>
+            <ui:define name="content">
+    		<div id="menu">
+                        <h:panelGroup>
+                            <h:graphicImage library="images" name="logout_img.jpg" id="logout_img"/>
+                            <h:form id="logoutform">
+                                <h:commandLink id="logoutlink"
+                                    style="text-decoration: none; " 
+                                    styleClass="logout"
+                                    title="pulse aquí para cerrar la sesión"
+                                    action="#{loginBean.logout}">
+                                    Cerrar sesión
+                                </h:commandLink>
+                            </h:form>
+			</h:panelGroup>
+                        <h:panelGroup rendered="#{loginBean.userAdmin}">
+                                    <h:graphicImage library="images" name="account.jpg" id="admin_img"
+                                        style="float: left; margin-top: 8px;margin-left: 100px;"/>
+                                    <h:link style="text-decoration: none; float: left; " 
+                                            styleClass="datos_cuenta_txt"
+                                            title="pulse aquí para gestionar los miembros de la asociación" 
+                                            outcome="adminAreaPage">
+                                        Gestionar miembros
+                                    </h:link>
+			</h:panelGroup>
+			<h:panelGroup>
+                                    <h:link style="text-decoration: none; " 
+                                            styleClass="datos_cuenta_txt"
+                                            title="pulse aquí para modificar los datos de su cuenta" 
+                                            outcome="userDataForm">
+                                        Datos cuenta
+                                    </h:link>
+                                    <h:graphicImage library="images" name="account.jpg" id="cuenta_img"/>
+			</h:panelGroup>
+                        <h:panelGroup>
+                                <h:link style="text-decoration: none; " 
+                                styleClass="passwd_txt"
+                                title="pulse aquí para cambiar su contraseña" 
+                                outcome="passwdChangeForm">
+                                    Contraseña
+                                </h:link>
+                                <h:graphicImage library="images" name="passwd_img.jpg" id="passwd_img"/>
+			</h:panelGroup>
+		</div>
+                <h:panelGroup  styleClass="clearFloat"></h:panelGroup>
+                <h:panelGroup layout="block" style="display: table-row">
+                    <h:panelGroup layout="block" styleClass="area_div">
+                        <h:graphicImage library="images" name="home.gif" 
+                                        styleClass="area1_img"
+                                        style="margin-left: 5px;"/>
+                        <h:outputText value="housing" 
+                                       style="display: table-row;"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="area_div">
+                        <h:graphicImage library="images" name="networking.gif" 
+                                        styleClass="area1_img"
+                                        style="margin-left: 20px;"/>
+                        <h:outputText value="networking" 
+                                       style="display: table-row;"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="area_div">
+                        <h:graphicImage library="images" name="visa.gif" 
+                                        styleClass="area1_img"
+                                        style="margin-left: 20px;"/>
+                        <h:outputText value="inmigración" 
+                                       style="display: table-row;"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+		<h:panelGroup styleClass="clearFloat"></h:panelGroup>
+                <h:panelGroup layout="block" style="display: table-row">
+                    <h:panelGroup layout="block" styleClass="area_div"
+                                  style="padding-left: 110px;">
+                        <h:graphicImage library="images" name="company.gif" 
+                                        styleClass="area1_img"
+                                        style="margin-left: 15px;"/>
+                        <h:outputText value="desarrollo" 
+                                       style="display: table-row;padding-left: 20px;"/>
+                        <h:outputText value="profesional" 
+                                       style="display: table-row;"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="area_div">
+                        <h:graphicImage library="images" name="dollar.gif" styleClass="area1_img"/>
+                        <h:outputText value="grants" 
+                                       style="display: table-row;"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" styleClass="area_div"
+                                  style="padding-left: 155px;">
+                        <h:graphicImage library="images" name="directory.gif" 
+                                        styleClass="area1_img"
+                                        style="margin-left: 15px;"/>
+                        <h:outputText value="directorio" 
+                                       style="display: table-row;"/>
+                        
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup styleClass="clearFloat"></h:panelGroup>
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        <cc:interface>
+            <cc:attribute name="title" required="true"/>
+            <cc:attribute name="data" required="true" type="useraccess.model.UserBean"/>
+        </cc:interface>
+        <cc:implementation>
+            <h:panelGroup layout="block" style="display:table;padding: 20px 20px 20px 0;">
+                
+                    <h:commandLink  id="addprofile"
+                                    action="#{cc.attrs.data.addSocialProfile}"
+                                    title="pulse para añadir un perfil social"
+                                    style="display:table-row;padding: 20px 0px 20px 0px;"
+                                    styleClass="textdefault"
+                                    immediate="true">
+                                       #{cc.attrs.title}
+                    </h:commandLink> 
+                
+                    <h:panelGroup layout="block" style="display:table-row;padding: 20px 5px 20px 20px;">
+                        <h:dataTable id="socialProfiles" 
+                                     headerClass="social-list-header"
+                                     rowClasses="social-list"
+                                     rendered="#{cc.attrs.data.socialProfilesSize > 0}" 
+                                     value="#{cc.attrs.data.socialProfiles}"
+                                     var="profile">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Red social"/>
+                                </f:facet>
+                                <h:selectOneMenu id="network" value="#{profile.network}">
+                                    <f:selectItem itemLabel="LinkedIn" itemValue="LinkedIn"/>
+                                    <f:selectItem itemLabel="facebook" itemValue="facebook"/>
+                                    <f:selectItem itemLabel="twitter" itemValue="twitter"/>
+                                    <f:selectItem itemLabel="Google+" itemValue="Google+"/>
+                                    <f:selectItem itemLabel="badoo" itemValue="badoo"/>
+                                    <f:selectItem itemLabel="Tuenti" itemValue="Tuenti"/>
+                                    <f:selectItem itemLabel="Myspace" itemValue="Myspace"/>
+                                    <f:selectItem itemLabel="Otra..." itemValue="otras"/>
+                                </h:selectOneMenu>    
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Cuenta"/>
+                                </f:facet>
+                                <h:inputText id="account" value="#{profile.account}"/>
+                            </h:column>
+                            <h:column>
+                                <h:commandButton image="/resources/images/minus.jpg" 
+                                                 type="button"
+                                                 action="#{cc.attrs.data.deleteSocialProfile}"
+                                                 title="pulse para eliminar este perfil social"
+                                                 style="vertical-align: middle;"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+            </h:panelGroup>
+        </cc:implementation>
+</ui:component>
+

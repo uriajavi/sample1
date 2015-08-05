@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:uar="http://xmlns.jcp.org/jsf/composite/uarcomp">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <ui:define name="content_title">
+                Confirmación de registro
+            </ui:define>
+            <ui:define name="content">
+                <span class="Line"/>
+                <h:panelGroup layout="block" style="display:table;padding: 20px 20px 0 0;">
+                    <h:graphicImage library="images" name="info.jpg" 
+                                    style="display: table-cell; vertical-align: middle;
+                                           width:50%;margin: 20px 20px 20px 20px" />
+
+                    <p class="text" style="display: table-cell; vertical-align: middle;
+                                           margin: 20px 20px 20px 20px;width:80%;">
+                        Se ha realizado correctamente el registro de su solicitud.
+                        <b>Su solicitud está pendiente de ser aprobada.</b> 
+                        Una vez aprobada o denegada se le enviará un correo electrónico informativo.
+                        Asimismo, se le ha enviado un correo electrónico con las
+                        credenciales que podrá utilizar para acceder como miembro a
+                        nuestra web una vez realizado el procedimiento de validación.
+                    </p>
+                </h:panelGroup>  
+                    <h:form id="exitform" lang="es">
+                        <h:commandButton id="exit"
+                                         styleClass="button" value=" Ok "
+                                         style="display: table-row;margin-left:50%;
+                                                margin-top: 5%;"
+                                         action="#{signUp.clear}"
+                                         />
+                    </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

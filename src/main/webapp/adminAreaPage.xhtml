@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:uar="http://xmlns.jcp.org/jsf/composite/uarcomp">
+    <h:body>
+        <ui:composition template="template.xhtml">
+            <f:metadata>
+                <f:event type="preRenderView" 
+                         listener="#{adminBean.validateSession}"/>
+            </f:metadata>
+            <ui:define name="header_script">
+                <script type="text/javascript">
+                    function onLoad(){
+                        criteriaOnChange();
+                    }
+                </script>
+            </ui:define>
+            <ui:define name="content_title">
+                <h:outputText style="font-size: 100%;" 
+                              value="Gestión de usuarios miembros"/>
+            </ui:define>
+            <ui:define name="content">
+                <span class="Line"/>
+                
+                <h:form id="userstableform" style="display: block;padding-top: 20px;" 
+                        prependId="false">
+                   
+                    <h:panelGroup layout="block" id="criteriafields" 
+                                  style="display: table-cell;padding-top: 10px;">
+                        <h:outputLabel id="criterialabel" for="criteria" value="Mostrar"
+                                       style="display: table-row;"/>
+                        <h:selectOneMenu id="criteria"
+                                         style="display: table-row;"
+                                         value="#{adminBean.criteria}"
+                                         onchange="javascript:criteriaOnChange();">
+                            <f:selectItem itemLabel="Todos los usuarios" itemValue="all"/>
+                            <f:selectItem itemLabel="Candidatos a miembro" itemValue="pending"/>
+                            <f:selectItem itemLabel="Usuario por DNI" itemValue="dni"/>
+                            <f:ajax event="change" 
+                                    execute="usersdata pagingControls DNI @this" 
+                                    render="usersdata pagingControls DNI @this errors ok-message" 
+                                    listener="#{adminBean.updateData}"/>
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup layout="block" id="DNIfields" 
+                                  style="display: none;padding-left:20px;"
+                                  >
+                        <h:outputLabel id="DNIlabel" for="DNI" value="DNI"
+                                       style="display: table-row;"/>
+                        <h:inputText id="DNI"
+                                     maxlength="100" 
+                                     validator="#{signUp.validateDNI}"
+                                     value="#{adminBean.DNI}"
+                                     style="display: table-row;width: 60%;"
+                                     >
+                            <f:ajax event="change" 
+                                    render="usersdata pagingControls criteria @this errors ok-message" 
+                                    execute="usersdata pagingControls criteria @this" 
+                                    onerror="ajaxError" 
+                                    listener="#{adminBean.updateData}"/>
+                        </h:inputText>
+                    </h:panelGroup>
+                    <h:commandButton id="search"
+                                         style="margin-left: 30px;display: none;"
+                                         styleClass="button" value="Buscar"
+                                         action="#{adminBean.updateData}"/>
+                    <h:messages id="errors" layout="table" styleClass="error-messages"/>
+                    <h:panelGroup id="usersdata" layout="block" style="display:block ;width: 100%;">
+                        <h:dataTable id="userstable"
+                                     headerClass="user-list-header"
+                                     rowClasses="user-list-even, user-list-odd"
+                                     columnClasses="user-list-td1,user-list-td2,user-list-td3"
+                                     rendered="#{adminBean.usersSize > 0}" 
+                                     value="#{adminBean.users}"
+                                     var="useritem">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:selectBooleanCheckbox id="allusers" 
+                                                             title="seleccionar todos"
+                                                             styleClass="select-all-ck"
+                                                             onchange="javascript:selectAll();"
+                                                             value="#{adminBean.selectAll}"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="selected_users"
+                                                         styleClass="user-list-ck"
+                                                         value="#{adminBean.selectedUsers[useritem.id]}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre"/>
+                                </f:facet>
+                                <h:commandLink style="text-decoration: none; " 
+                                        styleClass="user-list-td2" 
+                                        title="pulse aquí para ver el detalle del usuario" 
+                                        action="userDetailForm"
+                                        value="#{useritem.name} #{useritem.surname}">
+                                    <f:setPropertyActionListener value="#{useritem}" 
+                                                                 target="#{userDetailBean.user}"/>
+                                </h:commandLink>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="DNI"/>
+                                </f:facet>
+                                #{useritem.credential.login}
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" id="pagingControls"
+                                  style="padding-top: 20px">
+                        <h:commandButton  id="firstpage"
+                                        action="#{adminBean.firstPage}"
+                                        title="pulse aquí para ir a la primera página"
+                                        style="display: table-row;margin:3px 0px 0px 10px;
+                                            padding: 1px; font-size: 150%; font-weight: normal;"
+                                        styleClass="button"
+                                        rendered="#{! adminBean.firstPage}"
+                                        value="|←"/>
+                        <h:commandButton  id="prevpage"
+                                        action="#{adminBean.prevPage}"
+                                        title="pulse aquí para ir a la página anterior"
+                                        style="display: table-row;margin:3px 0px 0px 10px;
+                                            padding: 1px; font-size: 150%; font-weight: normal;"
+                                        styleClass="button"
+                                        rendered="#{! adminBean.firstPage}"
+                                        value="←"/>
+                        <h:outputLabel value="pag. #{adminBean.actualPageIndex}/#{adminBean.usersSize}"
+                                       style="margin-left:270px;font-weight: normal;"/>
+
+                        <h:commandButton  id="lastpage"
+                                        action="#{adminBean.lastPage}"
+                                        title="pulse aquí para ir a la última página"
+                                        style="display: table-row;float: right; margin:3px 0px 0px 10px;
+                                            padding: 1px; font-size: 150%; font-weight: normal;"
+                                        styleClass="button"
+                                        rendered="#{! adminBean.lastPage}"
+                                        value="→|"/>
+                        <h:commandButton  id="nextpage"
+                                        action="#{adminBean.nextPage}"
+                                        title="pulse aquí para ir a la página siguiente"
+                                        style="display: table-row;float: right; margin:3px 0px 0px 10px;
+                                            padding: 1px; font-size: 150%; font-weight: normal;"
+                                        styleClass="button"
+                                        rendered="#{! adminBean.lastPage}"
+                                        value="→"/>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" id="buttons"
+                                  style="padding-top: 20px;">
+                        <h:commandButton id="accept"
+                                         style="margin-left: 130px;"
+                                         styleClass="button" value="Admitir"
+                                         title="pulse aquí para admitir/habilitar a los usuarios seleccionados" 
+                                         action="#{adminBean.accept}"/>
+                        <h:commandButton id="reject"
+                                         style="margin-left: 30px;"
+                                         styleClass="button" value="Rechazar"
+                                         title="pulse aquí para rechazar/deshabilitar a los usuarios seleccionados" 
+                                         action="#{adminBean.reject}"/>
+                        <h:commandButton id="delete"
+                                         style="margin-left: 30px;"
+                                         styleClass="button" value="Eliminar"
+                                         title="pulse aquí para eliminar a los usuarios seleccionados" 
+                                         action="#{adminBean.delete}"
+                                         onclick="javascript:return deleteUsersOnClick();"/>
+                        <h:button id="cancel"
+                                     styleClass="button" value="Volver"
+                                     style="margin-left: 30px;"
+                                     outcome="memberAreaPage" 
+                                     />
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" id="ok-message">
+                        <h:outputText value="Operación realizada."
+                                      styleClass="ok-messages"
+                                      rendered="#{adminBean.showsOpDone}"/>
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
