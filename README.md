@@ -1,6 +1,6 @@
 # sample1
 Code sample repository. Contains a simple Java EE application for user management.
-This a Maven project for an JavaEE 7 application that allows:
+This a Maven project for a JavaEE 7 application that allows:
 
 <ul>
   <li> User's signing up  </li>
